@@ -1,0 +1,93 @@
+Tomcat 的体系结构
+server ：tomcat提供了server接口的一个默认实现，通常不需要用户自己去实现
+service： 存活在server中的内部组件， tomcat也提供了该接口的默认实现
+connector： 处理与客户端的通信，负责接收客户请求，以及向客户返回响应结果
+engine：每个service只能包含一个引擎 engine，引擎表示一个特定的service的请求处理流水线
+host： 一个虚拟主机，一个引擎可以包含多个host 用户同行藏不需要创建自定义的host
+context ;
+
+
+
+关于servlet的实例： simpleHello
+1： 编写simplehello.java 的文件：
+import javax.servlet.ServletException;
+import java.io.*;
+import javax.servlet.http.*;
+
+public class SimpleHello extends HttpServlet
+{
+   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+   { 
+     PrintWriter out=resp.getWriter(); //getWriter（）方法调用得到一个printwriter类型的输出流对象 out
+     out.println(" TuDAbao is superman");//调用out对象的println（）方法向客户端发送字符串
+     out.close();  //向客户端发送字符数据
+   }
+}
+覆盖了httpservlet 中的doGet（）的方法，用于对GET请求方法做出响应。
+
+
+2 编译SimpleHello.java
+ 我真切的感受到了 ：人类与动物的区别就在于会制造工具 曾经不懂eclipse的好是我太年轻了
+ cmd 
+ E:
+ cd 新建文件夹\tomcat\webapps\ch06\src
+ javac SimpleHello.java
+ 
+ 
+ 3.部署Servlet
+ 组成web应用程序的这些资源文件要部署在相应的目录层次中，根目录代表了整个web应用程序的根
+ 通常我们都是讲web应用程序的目录放到webapps目录下
+ 如果要新建一个web应用程序，可以在webapps目录下先建一个目录 我所建的目录是ch06 作为第一个web应用程序的根
+ 
+ 如果我们想要在servlet代码中访问保存在文件中的配置信息，而又不希望这些配置信息被客户端访问到，就可以把这个文件放到WEB-
+ 
+ web.xml 文件的内容 放到 WEB-INF下
+ <?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  version="4.0"
+  metadata-complete="true">
+
+  <display-name>Welcome to Tomcat</display-name>
+  <description>
+     Welcome to Tomcat
+  </description>
+  
+  
+  
+  <servlet>
+	  <servlet-name>helloworld</servlet-name>
+	  <servlet-class>SimpleHello</servlet-class>
+</servlet>
+
+
+<servlet-mapping>
+	<servlet-name>helloworld</servlet-name>
+	<url-pattern>/hello</url-pattern>
+</servlet-mapping>
+
+
+
+</web-app>
+
+
+
+4. 访问 直接在浏览器中访问： http://localhost:8080/ch06/hello
