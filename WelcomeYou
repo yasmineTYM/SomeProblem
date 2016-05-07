@@ -1,0 +1,10 @@
+step1：welcome.html
+step2: WelcomeYou.java
+
+HttpServletRequest对象封装了客户端的请求信息，要获取请求中某个参数的值，可以调用HttpServletRequest的getParameter方法
+step3: 编译java
+step4: 部署servlet
+
+
+ps:
+1:url-pattern完全对应浏览器的输入
